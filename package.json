@@ -9,7 +9,8 @@
     "dev": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev-a": "concurrently \"yarn dev\" \"yarn client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -20,10 +21,12 @@
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.11",
+    "puppeteer": "^3.0.4",
     "redis": "^3.0.2"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
+    "jest": "^26.0.1",
     "nodemon": "^2.0.3"
   }
 }
