@@ -1,6 +1,0 @@
-{
-    "mongoURI": "mongodb+srv://juan123:$123456$@cluster0-inlpp.mongodb.net/test?retryWrites=true&w=majority",
-    "jwtSecret": "secret123456$",
-    "githubClienId": "534c6ad9d79dce3b7a5e",
-    "githubClientSecret": "ea0ddf11057f91163e8a966e4700fc9e54633e3c"
-}

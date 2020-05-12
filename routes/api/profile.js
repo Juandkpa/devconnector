@@ -4,13 +4,18 @@ const axios = require('axios');
 const config = require('config');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
+const cleanCache = require('../../middleware/cleanCache');
 const Profile = require('../../models/Profile');
 const Post = require('../../models/Post');
+const User = require('../../models/User');
 
 
 router.get('/me', auth, async(req, res) => {
     try {
-        const profile = await Profile.findOne({user: req.user.id}).populate('user', ['name', 'avatar']);
+        const profile = await Profile
+                        .findOne({user: req.user.id})
+                        .populate({path:'user', select:['name', 'avatar'], model: User})
+                        .cache({key: req.user.id});
 
         if (!profile) return res.status(400).json({ msg: 'There is no profile for this user'});
 
@@ -22,7 +27,7 @@ router.get('/me', auth, async(req, res) => {
     }
 });
 
-router.post('/', [auth, [
+router.post('/', [auth, cleanCache, [
     check('status', 'Status is required').not().isEmpty(),
     check('skills', 'Skills is required').not().isEmpty()
     ]
@@ -89,7 +94,7 @@ async(req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+        const profiles = await Profile.find().populate({path:'user', select: ['name', 'avatar'], model: User}).cache();
         res.json(profiles);
     } catch (error) {
         console.error(error.message);
@@ -101,12 +106,14 @@ router.get('/user/:user_id', async (req, res) => {
     try {
         const profile = await Profile.findOne({
             user: req.params.user_id
-        }).populate('user', ['name', 'avatar']);
+        }).populate({path:'user', select:['name', 'avatar'], model: User})
+        .cache({key: req.params.user_id});
 
         if (!profile) return res.status(400).json({ msg: 'Profile not found'});
 
         res.json(profile);
     } catch (error) {
+        console.log("error", error);
         res.status(500).send('Server Error');
     }
 });

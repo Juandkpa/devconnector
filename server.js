@@ -2,6 +2,7 @@ const express = require('express');
 const {authRouter, postsRouter, profileRouter, usersRouter} = require('./routes/api');
 const connectDB = require('./config/db');
 const path = require('path');
+require('./services/cache');
 
 const app = express();
 const PORT = process.env.PORT || 5000;

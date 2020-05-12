@@ -84,7 +84,7 @@ router.put('/like/:id',auth, async(req, res) => {
         await post.save();
         res.json(post.likes);
     } catch (error) {
-        console.error(error.message);
+        console.error(error);
         res.status(500).send('Server Error');
     }
 });
@@ -130,7 +130,7 @@ router.post('/comment/:id', [auth, [
 
         post.comments.unshift(newComment)
         await post.save();
-        res.json(post.comments);
+        // res.json(post.comments);
 
     }catch(error) {
         console.error(error);
