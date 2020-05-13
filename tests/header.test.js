@@ -1,26 +1,19 @@
-const puppeteer = require('puppeteer');
-const sessionFactory = require('./factories/sessionFactory');
-const {getUser, disconnectDb } = require('./factories/dbFactory');
+const { disconnectDb } = require('./factories/dbFactory');
+const Page = require('./helpers/page');
 
-
-
-
-let browser, page;
+let page;
 
 beforeEach( async () => {
-    browser = await puppeteer.launch({
-        headless: false
-    });
-    page = await browser.newPage();
+    page = await Page.build();
     await page.goto('localhost:3000');
 });
 
 afterEach( async () => {
-    await browser.close();
+    await page.close();
 });
 
 test('the header has the correct text', async () => {
-    const text = await page.$eval('.navbar > h1 > a', el => el.innerText);
+    const text = await page.getTextOf('.navbar > h1 > a');
     expect(text).toEqual(' DevConnector');
 });
 
@@ -33,16 +26,10 @@ test('clicking login redirect to login', async() => {
 });
 
 test('when signed in, shows logout button ', async () => {
-    const user =  await getUser();
-    const token = await sessionFactory(user);
+    await page.login();
 
-    await page.evaluate((value) => localStorage.setItem('token', value), token);
-    await page.goto('localhost:3000');
-    await page.waitFor('.navbar > ul > li:last-child > a');
-
-    const text = await page.$eval('.navbar > ul > li:last-child > a', el => el.innerText);
+    const text = await page.getTextOf('.navbar > ul > li:last-child > a');
     expect(text).toEqual(' Logout');
 });
 
 afterAll(disconnectDb);
-
