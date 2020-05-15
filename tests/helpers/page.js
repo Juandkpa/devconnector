@@ -28,7 +28,7 @@ class CustomPage {
         const token = await sessionFactory(user);
 
         await this.page.evaluate((value) => localStorage.setItem('token', value), token);
-        await this.page.goto('localhost:3000');
+        await this.page.goto('localhost:3000/dashboard');
         await this.page.waitFor('.navbar > ul > li:last-child > a');
     }
 
