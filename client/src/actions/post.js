@@ -102,7 +102,6 @@ export const addPost = formData => async dispatch => {
 };
 
 export const getPost = id => async dispatch => {
-    console.log("fired getPost");
     try {
         const res = await axios.get(`/api/post/${id}`);
 

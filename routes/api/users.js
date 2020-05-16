@@ -26,7 +26,7 @@ async (req, res) => {
 
         const avatar = gravatar.url(email, {s: '200', r: 'pg', d: 'mm'});
         const salt = await bcrypt.genSalt(10);
-        console.log("here", name);
+
         user = new User({name, email, avatar, password});
         user.password = await bcrypt.hash(password, salt);
         await user.save();
@@ -34,14 +34,13 @@ async (req, res) => {
         const payload = {
             user: { id: user.id }
         };
-        console.log("here2", name);
+
         jwt.sign(
             payload,
             config.get('jwtSecret'),
             { expiresIn: 36000 },
             (error, token) => {
                 if (error) throw error;
-                console.log("token:::", token);
                 res.json({ token });
             }
         );

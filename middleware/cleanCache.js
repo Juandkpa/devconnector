@@ -5,5 +5,4 @@ module.exports = async (req, res, next) => {
     await next();
 
     clearHash(req.user.id);
-    console.log("cache has been cleared");
 }

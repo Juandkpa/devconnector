@@ -38,7 +38,7 @@ router.get('/', auth, async(req, res)=>{
         const posts = await Post.find().sort({date: -1});
         res.json(posts);
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
         send.status(500).send('Server Error');
     }
 });
@@ -67,7 +67,7 @@ router.delete('/:id', auth, async(req, res)=>{
         await post.remove();
         res.json( {msg: 'Post removed'});
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
         send.status(500).send('Server Error');
     }
 });

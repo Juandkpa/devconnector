@@ -46,7 +46,6 @@ async (req, res) => {
             { expiresIn: 36000 },
             (error, token) => {
                 if (error) throw error;
-                console.log("token:::", token);
                 res.json({ token });
             }
         );

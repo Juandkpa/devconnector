@@ -36,7 +36,6 @@ mongoose.Query.prototype.exec = async function () {
     const cacheValue = await client.hget(this.hashKey, key);
 
     if ( cacheValue ) {
-        console.log("from Redis");
         const doc = JSON.parse( cacheValue );
 
         if (Array.isArray(doc)) {

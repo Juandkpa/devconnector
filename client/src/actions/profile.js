@@ -29,7 +29,6 @@ export const getCurrentProfile = () => async dispatch => {
 };
 
 export const getProfiles = () => async dispatch => {
-    console.log("getProfile fired");
     dispatch({ type: CLEAR_PROFILE });
 
     try {
@@ -129,7 +128,6 @@ export const addExperience = (formData, history) => async dispatch => {
         dispatch(setAlert('Experience Added', 'success'));
         history.push('/dashboard');
     }catch (err) {
-        console.log("what!", err.response.data.errors);
         const errors = err.response.data.errors;
 
         if (errors) {
