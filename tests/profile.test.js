@@ -1,3 +1,4 @@
+const { disconnectDb } = require('./factories/dbFactory');
 const Page = require('./helpers/page');
 
 let page;
@@ -62,3 +63,49 @@ describe('When logged in', () => {
         });
     });
 });
+
+describe('When is not logged in', () => {
+    let token;
+
+    afterEach(async() =>{
+        token = await page.evaluate(() => localStorage.getItem('token') );
+    });
+
+    test('user cannot create profile', async () => {
+        const result = await page.evaluate(
+            (token) => {
+                return fetch('/api/profile', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token
+                    },
+                    body: JSON.stringify({ status: 'Developer', skills: 'python,puppeteer' })
+                }).then( res => res.json() );
+            },
+            token
+        );
+
+        expect(result).toEqual({ msg: 'Token is not valid' });
+    });
+
+    test('user cannot get own profile', async () => {
+        const result = await page.evaluate(
+            (token) => {
+                return fetch('/api/profile/me', {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token
+                    }
+                }).then( res => res.json() );
+            },
+            token
+        );
+        expect(result).toEqual({ msg: 'Token is not valid' });
+    })
+});
+
+afterAll(disconnectDb);
