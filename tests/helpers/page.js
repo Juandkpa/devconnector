@@ -5,7 +5,8 @@ const { getUser } = require('../factories/dbFactory');
 class CustomPage {
     static async build() {
         const browser = await puppeteer.launch({
-            headless: false
+            headless: true,
+            arg: ['--no-sandbox']
         });
 
         const page = await browser.newPage();
@@ -28,7 +29,7 @@ class CustomPage {
         const token = await sessionFactory(user);
 
         await this.page.evaluate((value) => localStorage.setItem('token', value), token);
-        await this.page.goto('localhost:3000/dashboard');
+        await this.page.goto('http://localhost:3000/dashboard');
         await this.page.waitFor('.navbar > ul > li:last-child > a');
     }
 

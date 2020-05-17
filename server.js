@@ -17,7 +17,7 @@ app.use('/api/post', postsRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/users', usersRouter);
 
-if(process.env.NODE_ENV === 'production'){
+if (['production', 'ci'].includes(process.env.NODE_ENV)) {
     app.use(express.static('client/build'));
 
     app.get('*', (req, res) => {
