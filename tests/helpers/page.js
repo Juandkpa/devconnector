@@ -35,6 +35,49 @@ class CustomPage {
     async getTextOf(selector) {
         return this.page.$eval(selector, el => el.innerText);
     }
+
+    get(path, token) {
+
+        return this.page.evaluate(
+            (_path, _token) => {
+                return fetch( _path, {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': _token
+                    }
+                }).then( res => res.json() );
+            },
+            path, token
+        );
+    }
+
+    post(path, token, data) {
+
+        return this.page.evaluate(
+            (_path, _token, _data) => {
+                return fetch( _path, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': _token
+                    },
+                    body: JSON.stringify(_data)
+                }).then( res => res.json() );
+            },
+            path, token, data
+        );
+    }
+
+    execRequests(actions, token) {
+        return Promise.all(
+            actions.map(({ method, path, data }) => this[method](path, token, data) )
+        );
+    }
+
+
 }
 
 module.exports = CustomPage;

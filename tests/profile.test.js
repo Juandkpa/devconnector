@@ -66,46 +66,33 @@ describe('When logged in', () => {
 
 describe('When is not logged in', () => {
     let token;
+    const actions = [
+        {
+            method: 'get',
+            path: '/api/profile/me'
+        },
+        {
+            method: 'post',
+            path: '/api/profile',
+            data: {
+                status: 'Developer',
+                skills: 'python,puppeteer'
+            }
+        }
+    ];
 
     afterEach(async() =>{
         token = await page.evaluate(() => localStorage.getItem('token') );
     });
 
-    test('user cannot create profile', async () => {
-        const result = await page.evaluate(
-            (token) => {
-                return fetch('/api/profile', {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': token
-                    },
-                    body: JSON.stringify({ status: 'Developer', skills: 'python,puppeteer' })
-                }).then( res => res.json() );
-            },
-            token
-        );
+    test('Profile related actions are prohibited', async () => {
+        const results = await page.execRequests(actions, token);
 
-        expect(result).toEqual({ msg: 'Token is not valid' });
+        for (let result of results) {
+            expect(result).toEqual({ msg: 'Token is not valid' });
+        }
     });
 
-    test('user cannot get own profile', async () => {
-        const result = await page.evaluate(
-            (token) => {
-                return fetch('/api/profile/me', {
-                    method: 'GET',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': token
-                    }
-                }).then( res => res.json() );
-            },
-            token
-        );
-        expect(result).toEqual({ msg: 'Token is not valid' });
-    })
 });
 
 afterAll(disconnectDb);
