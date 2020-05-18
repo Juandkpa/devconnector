@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import Spinner from '../layout/Spinner'
 import { getProfileById } from '../../actions/profile';
-import EditProfile from '../profile-forms/EditProfile';
 import ProfileTop from './ProfileTop'
 import ProfileAbout from './ProfileAbout'
 import ProfileExperience from './ProfileExperience';
@@ -19,7 +18,7 @@ const Profile = ({
 }) => {
     useEffect(() => {
         getProfileById(match.params.id)
-    }, [getProfileById] )
+    }, [ getProfileById, match.params.id ] )
 
     return (
        <Fragment>
