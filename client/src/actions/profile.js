@@ -79,13 +79,24 @@ export const getGithubRepos = (username) => async dispatch => {
     }
 };
 
-export const createProfile = (formData, history, edit = false) => async dispatch => {
+export const createProfile = (formData, file, history, edit = false) => async dispatch => {
     try {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
+
             }
         };
+
+        const headers = {
+            headers: {
+                'Content-Type': 'application/octet-stream',
+            }
+        };
+        console.log("file::", file);
+        const uploadConfig = await axios.get('/api/upload');
+        await axios.put(uploadConfig.data.url, file, headers);
+
         const res = await axios.post('/api/profile', formData, config);
 
         dispatch({
