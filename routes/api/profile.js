@@ -96,7 +96,7 @@ async(req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const profiles = await Profile.find().populate({path:'user', select: ['name', 'avatar'], model: User}).cache();
+        const profiles = await Profile.find().populate({path:'user', select: ['name'], model: User});
         res.json(profiles);
     } catch (error) {
         console.error(error.message);
@@ -108,7 +108,7 @@ router.get('/user/:user_id', async (req, res) => {
     try {
         const profile = await Profile.findOne({
             user: req.params.user_id
-        }).populate({path:'user', select:['name', 'avatar'], model: User})
+        }).populate({path:'user', select:['name'], model: User})
         .cache({key: req.params.user_id});
 
         if (!profile) return res.status(400).json({ msg: 'Profile not found'});
@@ -123,7 +123,7 @@ router.get('/user/:user_id', async (req, res) => {
 router.delete('/', auth, async (req, res) => {
     try {
         await Post.deleteMany({ user: req.user.id});
-        await Profile.findOneAndRemove({user: req.user.id}).populate('user', ['name', 'avatar']);
+        await Profile.findOneAndRemove({user: req.user.id}).populate('user', ['name']);
         await User.findOneAndRemove({_id: req.user.id});
 
         res.json({ msg: 'User deleted'});

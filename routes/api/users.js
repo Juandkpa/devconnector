@@ -1,5 +1,4 @@
 const express = require('express');
-const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -24,10 +23,9 @@ async (req, res) => {
 
         if (user) return res.status(400).json({ erros: [{ msg: 'User already exists'} ]});
 
-        const avatar = gravatar.url(email, {s: '200', r: 'pg', d: 'mm'});
         const salt = await bcrypt.genSalt(10);
 
-        user = new User({name, email, avatar, password});
+        user = new User({name, email, password});
         user.password = await bcrypt.hash(password, salt);
         await user.save();
 

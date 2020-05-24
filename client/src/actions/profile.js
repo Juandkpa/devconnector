@@ -100,8 +100,11 @@ export const createProfile = (formData, file, history, edit = false) => async di
             const uploadConfig = await axios.get(`/api/upload/${type}`, config);
 
             delete axios.defaults.headers.common["x-auth-token"];
-            await axios.put(uploadConfig.data.url, file, headers);
-            axios.defaults.headers.common['x-auth-token'] = localStorage.token
+            const { url, key } = uploadConfig.data;
+            await axios.put(url, file, headers);
+            axios.defaults.headers.common['x-auth-token'] = localStorage.token;
+
+            formData = { ...formData, avatar: key };
         }
 
         const res = await axios.post('/api/profile', formData, config);

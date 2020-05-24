@@ -21,7 +21,7 @@ const generateSignedUrl = async (userId, type) => {
         .file(key)
         .getSignedUrl(options);
 
-    return [url, key];
+    return [url, key.replace('/', '%2F')];
 };
 
 module.exports = generateSignedUrl;
