@@ -40,6 +40,7 @@ async(req, res) => {
     }
 
     const {
+        avatar,
         company,
         website,
         location,
@@ -56,6 +57,7 @@ async(req, res) => {
 
     const profileFields = {
         user: req.user.id,
+        avatar: avatar ? avatar : undefined,
         company: company ? company : undefined,
         website: website ? website : undefined,
         location: location ? location : undefined,

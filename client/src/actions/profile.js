@@ -14,7 +14,7 @@ import {
 
 export const getCurrentProfile = () => async dispatch => {
     try {
-        const res = await axios.get('/api/profile/me');
+        const res = await axios.get('/api/profile/me', { headers: {'x-auth-token' : localStorage.token} });
 
         dispatch({
             type: GET_PROFILE,
@@ -81,22 +81,26 @@ export const getGithubRepos = (username) => async dispatch => {
 
 export const createProfile = (formData, file, history, edit = false) => async dispatch => {
     try {
+
         const config = {
             headers: {
-                'Content-Type': 'application/json'
-
+                'Content-Type': 'application/json',
+                'x-auth-token' : localStorage.token
             }
         };
 
         const headers = {
             headers: {
-                'Content-Type': 'application/octet-stream',
+                'Content-Type': file.type,
             }
         };
-        console.log("file::", file);
-        const uploadConfig = await axios.get('/api/upload');
-        await axios.put(uploadConfig.data.url, file, headers);
 
+        const type = file.type.split("/")[1];
+        const uploadConfig = await axios.get(`/api/upload/${type}`, config);
+
+        delete axios.defaults.headers.common["x-auth-token"];
+        await axios.put(uploadConfig.data.url, file, headers);
+        axios.defaults.headers.common['x-auth-token'] = localStorage.token
         const res = await axios.post('/api/profile', formData, config);
 
         dispatch({

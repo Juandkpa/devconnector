@@ -8,13 +8,13 @@ admin.initializeApp({
 
 var bucket = admin.storage().bucket();
 
-const generateSignedUrl = async (userId) => {
-    const key = `${userId}/${uuid.v1()}.jpeg`;
+const generateSignedUrl = async (userId, type) => {
+    const key = `${userId}/${uuid.v1()}.${type}`;
     const options = {
         version: 'v4',
         action: 'write',
         expires: Date.now() + 5*60 * 1000,
-        contentType: 'image/jpeg'
+        contentType: `image/${type}`
     };
 
     const [ url ] = await bucket
