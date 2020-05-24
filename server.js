@@ -1,5 +1,11 @@
 const express = require('express');
-const {authRouter, postsRouter, profileRouter, usersRouter} = require('./routes/api');
+const {
+    authRouter,
+    postsRouter,
+    profileRouter,
+    usersRouter,
+    uploadRouter
+} = require('./routes/api');
 const connectDB = require('./config/db');
 const path = require('path');
 require('./services/cache');
@@ -16,6 +22,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/post', postsRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/upload', uploadRouter);
 
 if (['production', 'ci'].includes(process.env.NODE_ENV)) {
     app.use(express.static('client/build'));

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 const ProfileItem = ({
     profile: {
-        user: {_id, name, avatar },
+        user: {_id, name },
+        avatar,
         status,
         company,
         location,
@@ -11,7 +12,7 @@ const ProfileItem = ({
     }
 }) => {
     return <div className="profile bg-light">
-        <img src={avatar} alt="" className="round-img" />
+        <img src={`${process.env.REACT_APP_STORAGE}${avatar}`} alt="" className="round-img" />
             <div>
                 <h2>{name}</h2>
                 <p>{status} {company && <span> at {company}</span>}</p>

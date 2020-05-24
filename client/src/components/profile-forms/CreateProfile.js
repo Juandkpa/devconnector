@@ -20,6 +20,7 @@ const CreateProfile = ({ createProfile, history }) => {
         instagram: ''
     });
     const [displaySocialInputs, toggleSocialInputs] = useState(false);
+    const [ file, setFile ] = useState(null);
 
     const {
         company,
@@ -38,9 +39,11 @@ const CreateProfile = ({ createProfile, history }) => {
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+    const onFileChange = e => setFile(e.target.files[0]);
+
     const onSubmit = e => {
         e.preventDefault();
-        createProfile(formData, history);
+        createProfile(formData, file, history);
     }
     return (
         <Fragment>
@@ -54,6 +57,12 @@ const CreateProfile = ({ createProfile, history }) => {
             <small>* = required field</small>
             <form className="form" onSubmit={e => onSubmit(e)}>
                 <div className="form-group">
+                   <input onChange={ e=>onFileChange(e) } type="file" accept="image/*" />
+                   <small className="form-text">
+                        Upload your profile image
+                    </small>
+                </div>
+                <div className="form-group">
                     <select name="status" value={status} onChange={e=>onChange(e)}>
                         <option value="0">* Select Professional Status</option>
                         <option value="Developer">Developer</option>
@@ -65,9 +74,9 @@ const CreateProfile = ({ createProfile, history }) => {
                         <option value="Intern">Intern</option>
                         <option value="Other">Other</option>
                     </select>
-                    <small className="form-text"
-                    >Give us an idea of where you are at in your career</small
-                    >
+                    <small className="form-text">
+                        Give us an idea of where you are at in your career
+                    </small>
                 </div>
                 <div className="form-group">
                     <input type="text" placeholder="Company" name="company" value={company} onChange={e=>onChange(e)}/>

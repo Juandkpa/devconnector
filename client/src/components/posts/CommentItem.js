@@ -16,7 +16,7 @@ const CommentItem = ({
       <Link to={`/profile/${user}`}>
         <img
           className="round-img"
-          src={avatar}
+          src={`${process.env.REACT_APP_STORAGE}${avatar}`}
           alt=""
         />
         <h4>{name}</h4>
