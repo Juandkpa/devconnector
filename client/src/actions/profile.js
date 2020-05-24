@@ -89,18 +89,21 @@ export const createProfile = (formData, file, history, edit = false) => async di
             }
         };
 
-        const headers = {
-            headers: {
-                'Content-Type': file.type,
-            }
-        };
+        if (file) {
+            const headers = {
+                headers: {
+                    'Content-Type': file.type,
+                }
+            };
 
-        const type = file.type.split("/")[1];
-        const uploadConfig = await axios.get(`/api/upload/${type}`, config);
+            const type = file.type.split("/")[1];
+            const uploadConfig = await axios.get(`/api/upload/${type}`, config);
 
-        delete axios.defaults.headers.common["x-auth-token"];
-        await axios.put(uploadConfig.data.url, file, headers);
-        axios.defaults.headers.common['x-auth-token'] = localStorage.token
+            delete axios.defaults.headers.common["x-auth-token"];
+            await axios.put(uploadConfig.data.url, file, headers);
+            axios.defaults.headers.common['x-auth-token'] = localStorage.token
+        }
+
         const res = await axios.post('/api/profile', formData, config);
 
         dispatch({

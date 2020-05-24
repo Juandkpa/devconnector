@@ -22,7 +22,7 @@ describe('When logged in', () => {
     test('can see profile create form', async () => {
         const text = await page.getTextOf('form small');
 
-        expect(text).toEqual('Give us an idea of where you are at in your career');
+        expect(text).toEqual('Upload your profile image');
     });
 
     describe('and required inputs are filled', () => {
