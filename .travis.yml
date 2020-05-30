@@ -12,9 +12,8 @@ cache:
         - node_modules
 install:
     - yarn
-    - npm run build
+    - yarn build
 script:
-    - nohup npm run start &
+    - nohup yarn start &
     - sleep 3
-    - npm run test
-
+    - yarn test
