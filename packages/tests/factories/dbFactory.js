@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('../../models/User');
+const User = require('server/models/User');
 
 const getUser = async () => {
     await User.deleteMany();

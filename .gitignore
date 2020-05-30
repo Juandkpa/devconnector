@@ -1,5 +1,5 @@
 node_modules
-config/default.json
-config/test.json
+packages/server/config/default.json
+packages/test/config/test.json
 coverage
-client/build
+packages/client/build

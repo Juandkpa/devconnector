@@ -10,7 +10,6 @@ env:
 cache:
     directories:
         - node_modules
-        - client/node_modules
 install:
     - yarn
     - npm run build
